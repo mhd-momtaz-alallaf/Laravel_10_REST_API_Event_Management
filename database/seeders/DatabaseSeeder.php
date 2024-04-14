@@ -12,11 +12,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // the order is important
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+         \App\Models\User::factory(1000)->create(); // first we create users.
+
+         $this->call(EventSeeder::class); // secondly we generate some events with random ouners.
+         $this->call(AttendeeSeeder::class); // last thing we generate attendees for that events(every user attends events from 1 to 3).
     }
 }
