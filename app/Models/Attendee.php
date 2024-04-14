@@ -12,11 +12,11 @@ class Attendee extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class); // one user can attend many events.
+        return $this->belongsTo(User::class); // one user => many attendees (attendes for events).
     }
 
     public function event(): BelongsTo
     {
-        return $this->belongsTo(Event::class); // the other side of the relation.
+        return $this->belongsTo(Event::class); // the other side of the relation. (one event => many attendees)-(many attendees < = one event)
     }
 }

@@ -13,11 +13,11 @@ class Event extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class); // User is the ouner of Events. (one user => many events)
     }
 
     public function attendees(): HasMany
     {
-        return $this->hasMany(Attendee::class); // Event is the ouner of the attendees(the parent).
+        return $this->hasMany(Attendee::class); // Event is the ouner of the attendees(the parent). (one event => many attendees)
     }
 }
