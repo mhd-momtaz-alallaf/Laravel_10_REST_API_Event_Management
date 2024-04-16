@@ -58,7 +58,7 @@ class EventController extends Controller
 
         return $event; // this will return the event itself. 
 
-        
+
         // return $event->update(       // $event->update() returns boolean (0, 1) 
         //     $request->validate([
         //         'name' => 'sometimes|string|max:255', // sometimes: checks the constraints after sometimes only if the value in the input is present.
@@ -72,8 +72,10 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Event $event)
     {
-        //
+        $event->delete();
+
+        return response(status: 204);  // dont send any message when delete anything, just return the status 204 (no content).  
     }
 }
