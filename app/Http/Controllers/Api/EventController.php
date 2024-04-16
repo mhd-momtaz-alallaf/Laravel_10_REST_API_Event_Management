@@ -45,9 +45,28 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Event $event)
     {
-        //
+        $event->update(       
+            $request->validate([
+                'name' => 'sometimes|string|max:255', // sometimes: checks the constraints after sometimes only if the value in the input is present.
+                'description' => 'nullable|string',
+                'start_time' => 'sometimes|date',
+                'end_time' => 'sometimes|date|after:start_time'
+            ]),
+        );
+
+        return $event; // this will return the event itself. 
+
+        
+        // return $event->update(       // $event->update() returns boolean (0, 1) 
+        //     $request->validate([
+        //         'name' => 'sometimes|string|max:255', // sometimes: checks the constraints after sometimes only if the value in the input is present.
+        //         'description' => 'nullable|string',
+        //         'start_time' => 'sometimes|date',
+        //         'end_time' => 'sometimes|date|after:start_time'
+        //     ]),
+        // );
     }
 
     /**
