@@ -16,7 +16,7 @@ class EventController extends Controller
     {
         //return Event::all(); // have toJson() model method to convert the data to json response.  
 
-        return EventResource::collection(Event::all()); // convert the data to a json collection that warps the returned data with "data" field and adds some other metedata to the collection.
+        return EventResource::collection(Event::with('user')->get()); // convert the data to a json collection that warps the returned data with "data" field and adds some other metedata to the collection.
     }
 
     /**
@@ -44,6 +44,8 @@ class EventController extends Controller
     public function show(Event $event)
     {
         // return $event;
+
+        $event->load('user' ,'attendees');
         return new EventResource($event);
     }
 
