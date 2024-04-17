@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('events',EventController::class); // the deffirence between Resource and apiResource that apiResource dont add routs for create and edit because the api just for sending data not for views.
 Route::apiResource('events.attendees',AttendeeController::class)
-    ->scoped(['atendee' => 'event']); // scoped means that attendees are always part of the events, when we pass the attendee by Route Model Binding in AttendeeController controller then laravel will get all the parent model (events) too.
+    ->scoped()->except(['update']); // scoped means that attendees are always part of the events, when we pass the attendee by Route Model Binding in AttendeeController controller then laravel will get all the parent model (events) too.
