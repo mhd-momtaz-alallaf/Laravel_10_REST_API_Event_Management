@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api; // created by typeing:"php artisan make:controller Api/EventController --api"
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class EventController extends Controller
      */
     public function index()
     {
-        return Event::all();
+        //return Event::all(); // have toJson() model method to convert the data to json response.  
+
+        return EventResource::collection(Event::all()); // convert the data to a json collection that warps the returned data with "data" field and adds some other metedata to the collection.
     }
 
     /**
@@ -31,7 +34,8 @@ class EventController extends Controller
             'user_id' => 1
         ]);
 
-        return $event;
+        // return $event;
+        return new EventResource($event);
     }
 
     /**
@@ -39,7 +43,8 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return $event;
+        // return $event;
+        return new EventResource($event);
     }
 
     /**
@@ -56,7 +61,9 @@ class EventController extends Controller
             ]),
         );
 
-        return $event; // this will return the event itself. 
+        // return $event; // this will return the event itself.
+        
+        return new EventResource($event);  
 
 
         // return $event->update(       // $event->update() returns boolean (0, 1) 
