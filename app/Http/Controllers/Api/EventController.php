@@ -16,9 +16,36 @@ class EventController extends Controller
     {
         //return Event::all(); // have toJson() model method to convert the data to json response.  
 
+        $query = Event::query();
+        $relations = ['user', 'attendees', 'attendees.user']; // attendees.user (each attendee has a user_id and event_id, so attendees.user will get the user model that assosiated with the attendee )
+
+        foreach ($relations as $relation) {
+            $query->when( // when the first argument ($this->shouldIncludeRelation($relation)) is true, it will run the second function (fn($q) => $q->with($relation)) to alter the query
+                $this->shouldIncludeRelation($relation),
+                fn($q) => $q->with($relation)
+            );
+        }
+
         return EventResource::collection(
-            Event::with('user')->paginate()
+            $query->latest()->paginate()
         ); // convert the data to a json collection that warps the returned data with "data" field and adds some other metedata to the collection.
+    
+        // the new route will be: api/events?include=user,attendees,attendees.user  (or we can not include a relation or not include any relation at all).
+    }
+
+
+    protected function shouldIncludeRelation(string $relation): bool // this function is for load the relations optionally (not allways load the user relation in the index, will load it just when we need it).
+                                                                     // so we will use the include parameter in the route and add the relation/s we want to load.
+    {
+        $include = request()->query('include');
+
+        if (!$include) {
+            return false;
+        }
+
+        $relations = array_map('trim', explode(',', $include)); // the explode function lets us to convert a string to array using specefic sprator(,-.:).
+                                                                // the array_map function will run the php build in function (trim) for every array element returned by explode (trim is a php build in function that remove all the spaces at the start and the end of the element)
+        return in_array($relation, $relations); // a php build in function the checks if model relation $relation is exist in the relations array.
     }
 
     /**
