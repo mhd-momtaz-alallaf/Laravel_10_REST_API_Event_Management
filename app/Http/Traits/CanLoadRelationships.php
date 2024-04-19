@@ -5,12 +5,13 @@ namespace App\Http\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait CanLoadRelationships
 {
     public function loadRelationships(
-        Model|QueryBuilder|EloquentBuilder $for, // $for is the query we will applay relations loading on it,
-        ?array $relations = null ): Model|QueryBuilder|EloquentBuilder { // $relations is the relation/s we want to load.
+        Model|QueryBuilder|EloquentBuilder|HasMany $for, // $for is the query we will applay relations loading on it,
+        ?array $relations = null ): Model|QueryBuilder|EloquentBuilder|HasMany { // $relations is the relation/s we want to load.
         $relations = $relations ?? $this->relations ?? []; // (?? means or) this operator checks if the left variable is empety or null then use the right variable.
             // if we want to costomize a specefice array relations defferent from the passed $relations array, in this case we will not pass the array as
         foreach ($relations as $relation) {
