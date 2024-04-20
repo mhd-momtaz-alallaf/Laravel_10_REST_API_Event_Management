@@ -16,11 +16,6 @@ class EventController extends Controller
 
     private $relations = ['user', 'attendees', 'attendees.user']; // attendees.user (each attendee has a user_id and event_id, so attendees.user will get the user model that assosiated with the attendee )
 
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum')->except(['index', 'show']);
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -50,7 +45,7 @@ class EventController extends Controller
                 'start_time' => 'required|date',
                 'end_time' => 'required|date|after:start_time'
             ]),
-            'user_id' => $request->user()->id
+            'user_id' => 1
         ]);
 
         // return $event;
