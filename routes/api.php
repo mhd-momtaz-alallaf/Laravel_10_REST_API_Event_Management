@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/logout',[AuthController::class, 'logout'])
+    ->middleware('auth:sanctum');
 
 Route::apiResource('events',EventController::class); // the deffirence between Resource and apiResource that apiResource dont add routs for create and edit because the api just for sending data not for views.
 Route::apiResource('events.attendees',AttendeeController::class)
