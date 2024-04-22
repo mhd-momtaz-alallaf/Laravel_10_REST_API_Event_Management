@@ -19,6 +19,17 @@ class AttendeeController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum')->only(['store', 'destroy']);
+        $this->authorizeResource(Attendee::class,'attendee'); // after we make a policy class, this will make sure that the policy methodes will be performed within each EventController methodes.
+                                                            // we just pass the model (Attendee) and the route parameter ('attendee').
+        // Controller Method    Policy Method
+        // index      =>        viewAny
+        // show       =>        view
+        // create     =>        create
+        // store      =>        create
+        // edit       =>        update
+        // update     =>        update
+        // destroy    =>        delete
+    
     }
 
     /**
@@ -67,7 +78,7 @@ class AttendeeController extends Controller
      */
     public function destroy(Event $event, Attendee $attendee)
     {
-        $this->authorize('delete-attendee',[$event, $attendee]);
+        //$this->authorize('delete-attendee',[$event, $attendee]); // commented after we make a Policy.
         $attendee->delete();
 
         return response(status: 204);

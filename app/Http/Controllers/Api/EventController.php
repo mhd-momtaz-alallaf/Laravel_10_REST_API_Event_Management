@@ -20,6 +20,17 @@ class EventController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum')->except(['index', 'show']);
+
+        $this->authorizeResource(Event::class,'event'); // after we make a policy class, this will make sure that the policy methodes will be performed within each EventController methodes.
+                                                            // we just pass the model (Event) and the route parameter ('event').
+        // Controller Method    Policy Method
+        // index      =>        viewAny
+        // show       =>        view
+        // create     =>        create
+        // store      =>        create
+        // edit       =>        update
+        // update     =>        update
+        // destroy    =>        delete
     }
 
     /**
@@ -77,7 +88,7 @@ class EventController extends Controller
         // if( Gate::denies('update-event', $event))
         //     abort(403,'You are not Authorized to update this event!!');
 
-        $this->authorize('update-event',$event); // the same as above.
+        // $this->authorize('update-event',$event); // the same as above. // commented after we make a Policy.
 
         $event->update(       
             $request->validate([
