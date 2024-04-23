@@ -35,6 +35,12 @@ class SendEventReminders extends Command
 
         $this->info("Found $eventCount $eventLabel.");
 
+        $events->each( // each will perform an arrow function to each $event item in the $events collection
+            fn($event) => $event->attendees->each( // each event item have an attendees collection, so again we will perform an arrow function to each $attendee item
+                fn($attendee) => $this->info("Notifying the user {$attendee->user->id}")
+            )
+        );
+
 
         $this->info('Reminder notifications sent successfully!');
     }
