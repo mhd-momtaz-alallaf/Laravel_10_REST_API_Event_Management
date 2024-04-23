@@ -13,6 +13,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+
+        $schedule->command('app:send-event-reminders')
+            ->dailly(); // to play the scheduled commands (in development phaze) we will need to run this command (php artisan schedule:work) in a seprate cmd tab.
     }
 
     /**
