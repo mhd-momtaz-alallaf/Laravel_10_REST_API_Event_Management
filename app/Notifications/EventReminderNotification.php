@@ -8,9 +8,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EventReminderNotification extends Notification
+class EventReminderNotification extends Notification implements ShouldQueue // to tell laravel that this class have to run in the background
 {
-    use Queueable;
+    use Queueable; // to run the jobs queue, we will need to run this command (php artisan queue:work) in a seprate cmd tab. 
 
     /**
      * Create a new notification instance.
