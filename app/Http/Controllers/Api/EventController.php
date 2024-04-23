@@ -20,6 +20,8 @@ class EventController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum')->except(['index', 'show']);
+        $this->middleware('throttle:api') // rate limite this controller methods requests to make the users makes only 60 request per minute, by aplly the throttle middleware with group name 'api'.
+            ->only(['store', 'update', 'destroy']);
 
         $this->authorizeResource(Event::class,'event'); // after we make a policy class, this will make sure that the policy methodes will be performed within each EventController methodes.
                                                             // we just pass the model (Event) and the route parameter ('event').

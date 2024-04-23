@@ -19,6 +19,9 @@ class AttendeeController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum')->only(['store', 'destroy']);
+        $this->middleware('throttle:api') // rate limite this controller methods requests to make the users makes only 60 request per minute, by aplly the throttle middleware with group name 'api'.
+            ->only(['store', 'destroy']);
+
         $this->authorizeResource(Attendee::class,'attendee'); // after we make a policy class, this will make sure that the policy methodes will be performed within each EventController methodes.
                                                             // we just pass the model (Attendee) and the route parameter ('attendee').
         // Controller Method    Policy Method
@@ -50,7 +53,7 @@ class AttendeeController extends Controller
     public function store(Request $request, Event $event)
     {
         $attendee = $event->attendees()->create([
-            'user_id' => 1
+            'user_id' => $request->user()->id
         ]);
 
         return New AttendeeResource($this->loadRelationships($attendee));
